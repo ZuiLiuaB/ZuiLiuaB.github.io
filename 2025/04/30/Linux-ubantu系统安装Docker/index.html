@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Linux安装Docker | 醉流的神秘博客</title><meta name="author" content="ZuiLiu"><meta name="copyright" content="ZuiLiu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在此之前我掏钱买了另一个云服务器 在命令行中输入更新软件包索引 1sudo apt-get update  下载必要的软件包依赖 1sudo apt-get install apt-transport-https ca-certificates curl software-properties-common  添加官方密钥 1curl -fsSL https:&#x2F;&#x2F;download.docker.c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux安装Docker">
+<meta property="og:url" content="https://zuiliuab.github.io/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/index.html">
+<meta property="og:site_name" content="醉流的神秘博客">
+<meta property="og:description" content="在此之前我掏钱买了另一个云服务器 在命令行中输入更新软件包索引 1sudo apt-get update  下载必要的软件包依赖 1sudo apt-get install apt-transport-https ca-certificates curl software-properties-common  添加官方密钥 1curl -fsSL https:&#x2F;&#x2F;download.docker.c">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png">
+<meta property="article:published_time" content="2025-04-30T03:25:33.000Z">
+<meta property="article:modified_time" content="2025-05-05T08:29:03.059Z">
+<meta property="article:author" content="ZuiLiu">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Linux安装Docker",
+  "url": "https://zuiliuab.github.io/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/",
+  "image": "https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png",
+  "datePublished": "2025-04-30T03:25:33.000Z",
+  "dateModified": "2025-05-05T08:29:03.059Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "ZuiLiu",
+      "url": "https://zuiliuab.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://zuiliuab.github.io/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux安装Docker',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/new.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">醉流的神秘博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Linux安装Docker</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Linux安装Docker<a class="post-edit-link" href="null_posts/Linux-ubantu系统安装Docker.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-30T03:25:33.000Z" title="发表于 2025-04-30 11:25:33">2025-04-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-05T08:29:03.059Z" title="更新于 2025-05-05 16:29:03">2025-05-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Docker/">Docker</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Docker/Linux/">Linux</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Docker/Linux/%E5%AE%9E%E6%93%8D%E6%89%8B%E5%86%8C/">实操手册</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><del>在此之前我掏钱买了另一个云服务器</del></p>
+<p>在命令行中输入更新软件包索引</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<p>下载必要的软件包依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install apt-transport-https ca-certificates curl software-properties-common</span><br></pre></td></tr></table></figure>
+
+<p>添加官方密钥</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+
+<p>对于ubuntu 22.04 使用这个命令，当然其他也是同理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<p>安装docker引擎</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250430100620646.png" alt="image-20250430100620646"></p>
+<p>出现这些就差不多了</p>
+<p>查看docker版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker --version</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250430100712775.png" alt="image-20250430100712775"></p>
+<p>出现版本号即为安装成功</p>
+<p>检查docker是否在运行，绿色为运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status docker</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250430101437013.png" alt="image-20250430101437013"></p>
+<p>启动Docker（在没有运行的情况下才使用）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<p>拉取测试镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull hello-world</span><br></pre></td></tr></table></figure>
+
+<p>可能很慢，也可能失败</p>
+<p><img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250430100936669.png" alt="image-20250430100936669"></p>
+<p>很正常，毕竟现在docker官方源已经不能用了</p>
+<p>测试拉取公开镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/acs-sample/nginx:latest</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250430104902234.png" alt="image-20250430104902234"></p>
+<p>出现Pull complete即可</p>
+<p>运行一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  --name my-nginx \</span><br><span class="line">  -p 80:80 \</span><br><span class="line">  registry.cn-hangzhou.aliyuncs.com/acs-sample/nginx:latest</span><br></pre></td></tr></table></figure>
+
+<p>查看运行状态</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250430105551566.png" alt="image-20250430105551566" style="zoom:200%;" />
+
+<p>可以看到已经在运行了</p>
+<p>设置镜像源</p>
+<p>在该路径创建一个 daemon.json 文件</p>
+<p><img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250430110922428.png" alt="image-20250430110922428"></p>
+<p>daemon.json</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;builder&quot;: &#123;</span><br><span class="line">    &quot;gc&quot;: &#123;</span><br><span class="line">      &quot;defaultKeepStorage&quot;: &quot;20GB&quot;,</span><br><span class="line">      &quot;enabled&quot;: true</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;experimental&quot;: false,</span><br><span class="line">      &quot;registry-mirrors&quot;: [</span><br><span class="line">        &quot;https://docker.m.daocloud.io&quot;,</span><br><span class="line">        &quot;https://dockerproxy.com&quot;,</span><br><span class="line">        &quot;https://docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">        &quot;https://docker.nju.edu.cn&quot;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输入以上内容后保存！保存！保存！</p>
+<p>保存后重启</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service docker restart</span><br></pre></td></tr></table></figure>
+
+<p>查看信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker info</span><br></pre></td></tr></table></figure>
+
+<p>查看镜像源是否起效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker info | grep Mirrors -A 4</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250430112447596.png" alt="image-20250430112447596"></p>
+<p>这样就是成功添加4个镜像源了</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://zuiliuab.github.io">ZuiLiu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://zuiliuab.github.io/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/">https://zuiliuab.github.io/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://zuiliuab.github.io" target="_blank">醉流的神秘博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Docker/">Docker</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post-share"><div class="social-share" data-image="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/04/27/Windows%E6%A1%8C%E9%9D%A2%E7%89%88%E5%AE%89%E8%A3%85Docker/" title="Windows安装Docker"><img class="cover" src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Windows安装Docker</div></div><div class="info-2"><div class="info-item-1">官网下载先下载 Docker ，去官⽹下载 Docker www.docker.com  会久一点，可以魔法上网 下载好之后不计划装在C盘，于是打开cmd输入安装 1&quot;‪C:\Users\zuiliu\Downloads\Docker Desktop Installer.exe&quot; install --installation-dir=&quot;E:\docker&quot;  E:\docker为目标地址，弹出窗口后操作  点击ok，等待其完成，这里版本是4.40.0   完成后关闭即可，在安装后路径点击  启动 docker 后⾸先点 Accept ，之后点 continue without … ，不登陆，然后点右上⻆ skip 忽略   下面进行汉化 先在安装后的路径打开 ..\frontend\resources,将app.asar 复制，粘贴到其他地方进行备份  到Releases ·...</div></div></div></a><a class="pagination-related" href="/2025/05/03/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" title="Docker常用指令"><img class="cover" src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Docker常用指令</div></div><div class="info-2"><div class="info-item-1">Docker 跨平台操作指南（Windows&#x2F;Linux）基础查询指令123docker version     # 查看Docker版本信息docker info        # 显示系统级信息docker inspect &lt;容器ID&gt;  # 查看容器详细信息  镜像管理1234docker search &lt;镜像名&gt;    # 搜索镜像docker image ls          # 列出本地镜像docker image prune       # 删除悬空镜像docker history &lt;镜像名&gt;  # 查看镜像构建历史  容器生命周期123456789101112# 创建并启动容器（通用参数）docker run -it --rm \  -p 宿主机端口:容器端口 \  -v 宿主机路径:容器路径 \  --network=bridge \  --hostname mycontainer \  &lt;镜像名&gt;# 容器操作docker pause/unpause &lt;容器名&gt;  #...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/05/03/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" title="Docker常用指令"><img class="cover" src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-03</div><div class="info-item-2">Docker常用指令</div></div><div class="info-2"><div class="info-item-1">Docker 跨平台操作指南（Windows&#x2F;Linux）基础查询指令123docker version     # 查看Docker版本信息docker info        # 显示系统级信息docker inspect &lt;容器ID&gt;  # 查看容器详细信息  镜像管理1234docker search &lt;镜像名&gt;    # 搜索镜像docker image ls          # 列出本地镜像docker image prune       # 删除悬空镜像docker history &lt;镜像名&gt;  # 查看镜像构建历史  容器生命周期123456789101112# 创建并启动容器（通用参数）docker run -it --rm \  -p 宿主机端口:容器端口 \  -v 宿主机路径:容器路径 \  --network=bridge \  --hostname mycontainer \  &lt;镜像名&gt;# 容器操作docker pause/unpause &lt;容器名&gt;  #...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/new.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">ZuiLiu</div><div class="author-info-description">编程/自媒体/音乐/美术</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ZuiLiuaB"><i class="fab fa-github"></i><span>关注我的github</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/ZuiLiuaB" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/weixin_73079022" target="_blank" title="CSDN"><i class="fa fa-book-open"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2706610584&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:2706610584@qq.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎！背景：綿野レモンT</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/05/03/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" title="Docker常用指令"><img src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker常用指令"/></a><div class="content"><a class="title" href="/2025/05/03/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" title="Docker常用指令">Docker常用指令</a><time datetime="2025-05-03T15:22:30.000Z" title="发表于 2025-05-03 23:22:30">2025-05-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/" title="Linux安装Docker"><img src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux安装Docker"/></a><div class="content"><a class="title" href="/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/" title="Linux安装Docker">Linux安装Docker</a><time datetime="2025-04-30T03:25:33.000Z" title="发表于 2025-04-30 11:25:33">2025-04-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/27/Windows%E6%A1%8C%E9%9D%A2%E7%89%88%E5%AE%89%E8%A3%85Docker/" title="Windows安装Docker"><img src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Windows安装Docker"/></a><div class="content"><a class="title" href="/2025/04/27/Windows%E6%A1%8C%E9%9D%A2%E7%89%88%E5%AE%89%E8%A3%85Docker/" title="Windows安装Docker">Windows安装Docker</a><time datetime="2025-04-27T11:39:48.000Z" title="发表于 2025-04-27 19:39:48">2025-04-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/26/git%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/" title="git命令使用"><img src="https://img.picui.cn/free/2025/05/05/68185fb4e05c6.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="git命令使用"/></a><div class="content"><a class="title" href="/2025/04/26/git%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/" title="git命令使用">git命令使用</a><time datetime="2025-04-26T06:44:26.000Z" title="发表于 2025-04-26 14:44:26">2025-04-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/25/Ngnix%E9%85%8D%E7%BD%AE%E6%B5%81%E5%AA%92%E4%BD%93/" title="Nginx流媒体配置"><img src="https://img.picui.cn/free/2025/05/05/681867cba8ef1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nginx流媒体配置"/></a><div class="content"><a class="title" href="/2025/04/25/Ngnix%E9%85%8D%E7%BD%AE%E6%B5%81%E5%AA%92%E4%BD%93/" title="Nginx流媒体配置">Nginx流媒体配置</a><time datetime="2025-04-25T13:44:00.000Z" title="发表于 2025-04-25 21:44:00">2025-04-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By ZuiLiu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Nginx基本概念 | 醉流的神秘博客</title><meta name="author" content="ZuiLiu"><meta name="copyright" content="ZuiLiu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Nginx基本概念目录：  -Nginx究竟是什么？ -Nginx有什么特别之处？ -Nginx的反向代理 -Nginx的负载均衡  1、Nginx究竟是什么？​	打开它的官网 发现语言选项只有英文与俄文，是由伊戈尔·赛索耶夫为俄罗斯访问量第二的Rambler.ru站点（俄文：Рамблер）开发的一个高性能的HTTP好反向代理web的服务器，同时提供了IMAP&#x2F;POP3&#x2F;SM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx基本概念">
+<meta property="og:url" content="https://zuiliuab.github.io/2025/04/19/Nginx%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="醉流的神秘博客">
+<meta property="og:description" content="Nginx基本概念目录：  -Nginx究竟是什么？ -Nginx有什么特别之处？ -Nginx的反向代理 -Nginx的负载均衡  1、Nginx究竟是什么？​	打开它的官网 发现语言选项只有英文与俄文，是由伊戈尔·赛索耶夫为俄罗斯访问量第二的Rambler.ru站点（俄文：Рамблер）开发的一个高性能的HTTP好反向代理web的服务器，同时提供了IMAP&#x2F;POP3&#x2F;SM">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.picui.cn/free/2025/05/05/681867cba8ef1.png">
+<meta property="article:published_time" content="2025-04-19T13:14:26.000Z">
+<meta property="article:modified_time" content="2025-05-05T07:29:45.177Z">
+<meta property="article:author" content="ZuiLiu">
+<meta property="article:tag" content="nginx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.picui.cn/free/2025/05/05/681867cba8ef1.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Nginx基本概念",
+  "url": "https://zuiliuab.github.io/2025/04/19/Nginx%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3/",
+  "image": "https://img.picui.cn/free/2025/05/05/681867cba8ef1.png",
+  "datePublished": "2025-04-19T13:14:26.000Z",
+  "dateModified": "2025-05-05T07:29:45.177Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "ZuiLiu",
+      "url": "https://zuiliuab.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://zuiliuab.github.io/2025/04/19/Nginx%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Nginx基本概念',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/new.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img.picui.cn/free/2025/05/05/681867cba8ef1.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">醉流的神秘博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Nginx基本概念</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Nginx基本概念<a class="post-edit-link" href="null_posts/Nginx初步了解.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-19T13:14:26.000Z" title="发表于 2025-04-19 21:14:26">2025-04-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-05T07:29:45.177Z" title="更新于 2025-05-05 15:29:45">2025-05-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/nginx/">nginx</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/nginx/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="Nginx基本概念"><a href="#Nginx基本概念" class="headerlink" title="Nginx基本概念"></a>Nginx基本概念</h2><p>目录：</p>
+<ol>
+<li>-<a href="#%E6%98%AF%E4%BB%80%E4%B9%88">Nginx究竟是什么？</a></li>
+<li>-<a href="%E4%BB%80%E4%B9%88%E7%89%B9%E5%88%AB%E7%9A%84">Nginx有什么特别之处？</a></li>
+<li>-<a href="%E6%AD%A3%E5%90%91%E4%B8%8E%E5%8F%8D%E5%90%91">Nginx的反向代理</a></li>
+<li>-<a href="%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1">Nginx的负载均衡</a></li>
+</ol>
+<h5 id="1、Nginx究竟是什么？"><a href="#1、Nginx究竟是什么？" class="headerlink" title="1、Nginx究竟是什么？"></a>1、Nginx究竟是什么？<a id="是什么"></a></h5><p>​	打开它的<a target="_blank" rel="noopener" href="https://nginx.org/en/">官网</a> 发现语言选项只有英文与俄文，是由伊戈尔·赛索耶夫为俄罗斯访问量第二的Rambler.ru站点（俄文：Рамблер）开发的一个高性能的HTTP好反向代理web的服务器，同时提供了IMAP&#x2F;POP3&#x2F;SMTP服务。</p>
+<h5 id="2、Nginx有什么特别之处？"><a href="#2、Nginx有什么特别之处？" class="headerlink" title="2、Nginx有什么特别之处？"></a>2、Nginx有什么特别之处？<a id="什么特别的"></a></h5><ul>
+<li><strong>轻量级</strong>的Web 服务器&#x2F;反向代理服务器及电子邮件（IMAP&#x2F;POP3）代理服务器</li>
+<li>占的<strong>内存少</strong>！<strong>高并发</strong>能力更强！</li>
+<li>支持<strong>热部署</strong>，启动<strong>简单</strong>！</li>
+</ul>
+<h5 id="3、Nginx的反向代理"><a href="#3、Nginx的反向代理" class="headerlink" title="3、Nginx的反向代理"></a>3、Nginx的反向代理<a id="正向与反向"></a></h5><h6 id="在此之前，什么是代理呢？作用是？"><a href="#在此之前，什么是代理呢？作用是？" class="headerlink" title="在此之前，什么是代理呢？作用是？"></a>在此之前，什么是代理呢？作用是？</h6><p>​			代理（Proxy）在网络中是指一个中间服务器，它代表客户端或服务器来发送网络请求或接收响应。代理服务器本质上是一个中介角色，位于客户端和目标服务器之间。通过代理，原始的请求会被转发到目标服务器，而响应也会通过代理返回给最初的请求发起者。常见于VPN、加速器、与项目部署的代理。</p>
+<p>​			代理主要作用是：保护隐私、控制访问、性能优化、负载均衡、跨越网络限制。通过代理对客户端的ip进行保护、添加缓存、权限管理、绕过网络防火墙等操作保障使用与安全。</p>
+<h6 id="这是通常情况下浏览器与服务器的链接"><a href="#这是通常情况下浏览器与服务器的链接" class="headerlink" title="这是通常情况下浏览器与服务器的链接"></a>这是通常情况下浏览器与服务器的链接</h6><p>​			<img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250417222831582.png" alt="image-20250417222831582">	</p>
+<h6 id="我们在浏览外部网站时经过国内服务器一般是打不开的，一般会本地搭建个服务器来帮忙，这样以通过配置一个正向代理服务器来间接访问互联网上的资源的链接方式即为正向代理"><a href="#我们在浏览外部网站时经过国内服务器一般是打不开的，一般会本地搭建个服务器来帮忙，这样以通过配置一个正向代理服务器来间接访问互联网上的资源的链接方式即为正向代理" class="headerlink" title="我们在浏览外部网站时经过国内服务器一般是打不开的，一般会本地搭建个服务器来帮忙，这样以通过配置一个正向代理服务器来间接访问互联网上的资源的链接方式即为正向代理"></a>我们在浏览外部网站时经过国内服务器一般是打不开的，一般会本地搭建个服务器来帮忙，这样以通过配置一个正向代理服务器来间接访问互联网上的资源的链接方式即为正向代理</h6><h6 id=""><a href="#" class="headerlink" title=""></a><img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250417223545112.png" alt="image-20250417223545112"></h6><p>后端的服务器可以按需要扩充，服务变多之后，每个服务对应都有IP与端口，所以在之间提供一个进程让其对外一个URL域名，进程来时将这些请求均匀的转发到每个服务器</p>
+<img src="https://gitee.com/zuiliuaaaaab/figurebed/raw/master/img/image-20250419203253366.png" alt="image-20250419203253366" style="zoom:50%;" />
+
+<h6 id="Nginx的反向代理"><a href="#Nginx的反向代理" class="headerlink" title="Nginx的反向代理"></a>Nginx的反向代理</h6><p>​			Nginx的反向代理则是为服务器设计的，是 Nginx 的核心功能之一。它代表服务器接收客户端请求与处理，并根据具体情况将这些请求转发给一个或多个后端服务器处理。反向代理对于客户端来说是透明的，客户端并不知道它的存在。Nginx常被用作高性能的反向代理服务器，用于实现负载均衡、加速静态内容服务等目的。但是客户端眼里，服务器只有唯一的一台，就是代理服务器。这么做不论在保护用户隐私上还是服务器访问压力下都可以得到很好的缓解与优化。</p>
+<p>​			反向代理有以下核心功能： </p>
+<p>​				<strong>负载均衡</strong>：将请求分发到多个后端服务器。</p>
+<p>​				<strong>安全防护</strong>：隐藏后端服务器 IP，防止直接暴露。</p>
+<p>​				<strong>SSL 终结</strong>：由 Nginx 统一处理 HTTPS 加密&#x2F;解密，降低后端压力。</p>
+<p>​				<strong>缓存加速</strong>：缓存静态资源，提升响应速度。</p>
+<p>​				<strong>路由转发</strong>：根据路径、域名等规则，将请求导向不同服务。</p>
+<p>​		这里是简单的反向代理配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;                          # 监听公网 80 端口</span><br><span class="line">    server_name example.com;            # 你的域名或服务器 IP</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:3000;  # 核心指令：转发到本地 3000 端口</span><br><span class="line"></span><br><span class="line">        # 透传客户端信息（关键！否则后端可能无法获取真实 IP 等）</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">配置项</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">proxy_pass</td>
+<td>核心指令，定义转发目标地址</td>
+</tr>
+<tr>
+<td align="left">proxy_set_header</td>
+<td>透传客户端原始信息，确保后端服务能获取真实 IP、协议、域名等</td>
+</tr>
+<tr>
+<td align="left">listen 80</td>
+<td>监听标准 HTTP 端口，默认80</td>
+</tr>
+<tr>
+<td align="left">server_name</td>
+<td>指定域名，可配置多个或通配符</td>
+</tr>
+</tbody></table>
+<p>这是将&#x2F;api的请求来转发到Java服务（8081），其他请求转发到Node.js前端(3000)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name example.com;</span><br><span class="line"></span><br><span class="line">    location /api &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:8081;</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:3000;</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>反向代理</strong></th>
+<th><strong>正向代理</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>客户端感知</strong></td>
+<td>无感知（以为在访问真实服务器）</td>
+<td>需主动配置代理服务器</td>
+</tr>
+<tr>
+<td><strong>用途</strong></td>
+<td>保护后端、负载均衡、缓存加速</td>
+<td>突破网络限制、匿名访问</td>
+</tr>
+<tr>
+<td><strong>典型代表</strong></td>
+<td>Nginx、Cloudflare</td>
+<td>Shadowsocks、Charles</td>
+</tr>
+</tbody></table>
+<p>通过反向代理，Nginx 可轻松实现服务的统一入口管理和安全防护，是微服务架构中不可或缺的组件。</p>
+<h5 id="4、Nginx的负载均衡"><a href="#4、Nginx的负载均衡" class="headerlink" title="4、Nginx的负载均衡"></a>4、Nginx的负载均衡<a id="负载均衡"></a></h5><p>​				Nginx实现负载均衡主要是通过其反向代理功能来分发客户端请求到多个后端服务器，以达到优化资源使用、提高响应速度和增加系统可靠性等目的，它充当客户端和后端服务器之间的中间人，<strong>对外隐藏真实服务器</strong>。换句话说，当一个服务器压力大的时候，Nginx会安排另外的几个服务器来帮忙分担任务。客户端只需要访问一个对外的服务器地址既可安排真实服务器与其对接。</p>
+<p>Nginx支持多种负载均衡算法，可以在<code>upstream</code>块中指定：</p>
+<ol>
+<li><strong>轮询（默认）</strong>：每个请求按时间顺序逐一分配到不同的后端服务器。如果后端服务器down掉，能自动剔除。它按照上游池中服务器列表的顺序分发请求。当上游服务器的容量变化时，还可以考虑使用加权轮询。适合服务器配置相当，无状态且短平快的服务使用。也适用于图片服务器集群和纯静态页面服务器集群。但不适合有异构工作负载或服务器池的用例。</li>
+<li><strong>权重（weight）</strong>：根据权重分配请求，权重越高的服务器处理的请求越多。适用于服务器性能差异较大的场景。这种方式比较灵活,用于后端服务器性能不均的情况。</li>
+<li><strong>IP哈希（ip_hash）</strong>：仅适用于 HTTP。IP 哈希算法使用客户端 IP 地址作为哈希。IP 哈希与通用 哈希存在细微的不同，前者使用 IPv4 地址的前三个八进制位或整个 IPv6 地址，而 后者使用的是远程变量。当会话状态十分重要，但又无法通过应用的共享内存进行 处理时，此方法可确保客户端始终被代理到同一上游服务器（只要服务器可用）。基于客户端IP地址的哈希值选择服务器，确保来自同一IP的请求总是被发送到相同的服务器上，除非该服务器不可用。如果客户已经访问了某个服务器，当用户再次访问时，会将该请求通过哈希算法，自动定位到该服务器。每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。</li>
+<li><strong>最少连接（least_conn）</strong>：通过将当前请求代理到打开连接数最少的上游服务器实现负载均衡，将下一个请求分配给当前活跃连接数最少的服务器，最少连接也会考虑权重，适合长连接的情况。</li>
+</ol>
+<p>Nginx中的常见的负载均衡分为 HTTP 负载均衡、TCP 负载均衡、UDP 负载均衡这3种。</p>
+<p>​			举个例子，将负载分发到两个HTTP服务器上，在Nginx路径下的config文件里的配置文件中找到http模块，将使用</p>
+<p>upstream代码块来实施,写入到http{}模块内就行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">  server 10.10.12.45:80 weight=1;</span><br><span class="line">  server app.example.com:80 weight=2;</span><br><span class="line">  server spare.example.com:80 backup;</span><br><span class="line"> &#125;</span><br><span class="line"> server &#123;</span><br><span class="line">  location / &#123;</span><br><span class="line">    proxy_pass http://backend;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该配置对端口 80 的两台 HTTP 服务器实施负载均衡，然后再将另一台服务器定义为  backup，以便在两台主服务器不可用时发挥作用。可选的 weight 参数指示 NGINX 向 第二台服务器传输两倍的请求。未使用时，它的默认值为 1。这样权重分配可以控制Http的负载均衡。权重越大、该服务器压力与请求相对越大。</p>
+<p>​	而TCP负载均衡也与之大差不差，主要区别是在stream模块中实施,它们在OSI模型的不同层上运行，这个例子中的 server 代码块指示 NGINX 侦听 TCP 端口 3306，并在两个 MySQL 数据库 读取副本之间实施负载均衡，同时将另一台服务器定义为 backup，以便在主服务器崩溃时接管流量。stream 上下文默认情况下只能对数据包进行路由和负载均衡。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">  upstream mysql_read &#123;</span><br><span class="line">    server read1.example.com:3306 weight=5;</span><br><span class="line">    server read2.example.com:3306;</span><br><span class="line">    server 10.10.12.34:3306 backup;</span><br><span class="line">  &#125;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen 3306;</span><br><span class="line">    proxy_pass mysql_read;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		UDP 负载均衡的指定非常简单，只需使用 listen 指令中的 udp 参数便可。在 NGINX 的 stream 模块内使用 upstream 代码块（定义为 udp）对 UDP 服务器实施负载均衡。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">  upstream ntp &#123;</span><br><span class="line">    server ntp1.example.com:123 weight=2;</span><br><span class="line">    server ntp2.example.com:123;</span><br><span class="line">  &#125;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen 123 udp;</span><br><span class="line">    proxy_pass ntp;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与 TCP 类似，我们可以在 stream 模块中找到 UDP 负载均衡，并以同样的方式完成大部分配置。两者的主要区别在于，UDP 负载均衡的 listen 指令指定打开的套接字用于处 理 UDP 数据报（datagram）。UDP 负载均衡可能对某些企业来说不太常见，但在大 型环境中十分有用。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://zuiliuab.github.io">ZuiLiu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://zuiliuab.github.io/2025/04/19/Nginx%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3/">https://zuiliuab.github.io/2025/04/19/Nginx%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://zuiliuab.github.io" target="_blank">醉流的神秘博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/nginx/">nginx</a></div><div class="post-share"><div class="social-share" data-image="https://img.picui.cn/free/2025/05/05/681867cba8ef1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/04/20/Nginx%E5%AE%9E%E6%93%8D%EF%BC%81/" title="Nginx实践操作"><img class="cover" src="https://img.picui.cn/free/2025/05/05/681867cba8ef1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Nginx实践操作</div></div><div class="info-2"><div class="info-item-1">Nginx安装实操！打开上文中的官网 ，在右侧点击 download   或者直转下载 这里选择稳定版本，左侧红框为linux版本，右侧是windows版本  windows内找一个适合的路径解压，注意路径中不能有中文！！！ 双击exe，打开任务管理器，里面有相对应的进程就启动成功了  打开位于 conf 的 nginx.conf 文件，这个是nginx的配置文件，默认配置的nginx监听的端口为80。  在正常情况下，浏览器输入 localhost 是可以看到nginx的欢迎页面的 但是我出现了这个情况（请忽视https，是输入后被跳转的）  这种情况一般是设备的80端口被占用，可以在配置文件（nginx.conf）修改为未被占用的端口即可。 把监听端口修改成为了82， 当我们修改了nginx的配置文件nginx.conf 时，不需要关闭nginx后重新启动nginx，我们只需要使用管理员权限打开CMD或者Powershell，使用”D:”切换盘符，如果是C盘就直接使用 cd + 你之前解压的路径 来指定路径。  然后执行命令，就可以重载配置 1nginx -s reload...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/04/20/Nginx%E5%AE%9E%E6%93%8D%EF%BC%81/" title="Nginx实践操作"><img class="cover" src="https://img.picui.cn/free/2025/05/05/681867cba8ef1.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-20</div><div class="info-item-2">Nginx实践操作</div></div><div class="info-2"><div class="info-item-1">Nginx安装实操！打开上文中的官网 ，在右侧点击 download   或者直转下载 这里选择稳定版本，左侧红框为linux版本，右侧是windows版本  windows内找一个适合的路径解压，注意路径中不能有中文！！！ 双击exe，打开任务管理器，里面有相对应的进程就启动成功了  打开位于 conf 的 nginx.conf 文件，这个是nginx的配置文件，默认配置的nginx监听的端口为80。  在正常情况下，浏览器输入 localhost 是可以看到nginx的欢迎页面的 但是我出现了这个情况（请忽视https，是输入后被跳转的）  这种情况一般是设备的80端口被占用，可以在配置文件（nginx.conf）修改为未被占用的端口即可。 把监听端口修改成为了82， 当我们修改了nginx的配置文件nginx.conf 时，不需要关闭nginx后重新启动nginx，我们只需要使用管理员权限打开CMD或者Powershell，使用”D:”切换盘符，如果是C盘就直接使用 cd + 你之前解压的路径 来指定路径。  然后执行命令，就可以重载配置 1nginx -s reload...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/new.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">ZuiLiu</div><div class="author-info-description">编程/自媒体/音乐/美术</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ZuiLiuaB"><i class="fab fa-github"></i><span>关注我的github</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/ZuiLiuaB" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/weixin_73079022" target="_blank" title="CSDN"><i class="fa fa-book-open"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2706610584&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:2706610584@qq.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎！背景：綿野レモンT</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">Nginx基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1%E3%80%81Nginx%E7%A9%B6%E7%AB%9F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">1、Nginx究竟是什么？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2%E3%80%81Nginx%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E5%88%AB%E4%B9%8B%E5%A4%84%EF%BC%9F"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">2、Nginx有什么特别之处？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3%E3%80%81Nginx%E7%9A%84%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">3、Nginx的反向代理</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%9C%A8%E6%AD%A4%E4%B9%8B%E5%89%8D%EF%BC%8C%E4%BB%80%E4%B9%88%E6%98%AF%E4%BB%A3%E7%90%86%E5%91%A2%EF%BC%9F%E4%BD%9C%E7%94%A8%E6%98%AF%EF%BC%9F"><span class="toc-number">1.0.0.3.1.</span> <span class="toc-text">在此之前，什么是代理呢？作用是？</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%BF%99%E6%98%AF%E9%80%9A%E5%B8%B8%E6%83%85%E5%86%B5%E4%B8%8B%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">1.0.0.3.2.</span> <span class="toc-text">这是通常情况下浏览器与服务器的链接</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%A4%96%E9%83%A8%E7%BD%91%E7%AB%99%E6%97%B6%E7%BB%8F%E8%BF%87%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%80%E8%88%AC%E6%98%AF%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%EF%BC%8C%E4%B8%80%E8%88%AC%E4%BC%9A%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%B8%AA%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%A5%E5%B8%AE%E5%BF%99%EF%BC%8C%E8%BF%99%E6%A0%B7%E4%BB%A5%E9%80%9A%E8%BF%87%E9%85%8D%E7%BD%AE%E4%B8%80%E4%B8%AA%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%A5%E9%97%B4%E6%8E%A5%E8%AE%BF%E9%97%AE%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%8A%E7%9A%84%E8%B5%84%E6%BA%90%E7%9A%84%E9%93%BE%E6%8E%A5%E6%96%B9%E5%BC%8F%E5%8D%B3%E4%B8%BA%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">1.0.0.3.3.</span> <span class="toc-text">我们在浏览外部网站时经过国内服务器一般是打不开的，一般会本地搭建个服务器来帮忙，这样以通过配置一个正向代理服务器来间接访问互联网上的资源的链接方式即为正向代理</span></a></li><li class="toc-item toc-level-6"><a class="toc-link"><span class="toc-number">1.0.0.3.4.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Nginx%E7%9A%84%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">1.0.0.3.5.</span> <span class="toc-text">Nginx的反向代理</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4%E3%80%81Nginx%E7%9A%84%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">1.0.0.4.</span> <span class="toc-text">4、Nginx的负载均衡</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/05/03/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" title="Docker常用指令"><img src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker常用指令"/></a><div class="content"><a class="title" href="/2025/05/03/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/" title="Docker常用指令">Docker常用指令</a><time datetime="2025-05-03T15:22:30.000Z" title="发表于 2025-05-03 23:22:30">2025-05-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/" title="Linux安装Docker"><img src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux安装Docker"/></a><div class="content"><a class="title" href="/2025/04/30/Linux-ubantu%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85Docker/" title="Linux安装Docker">Linux安装Docker</a><time datetime="2025-04-30T03:25:33.000Z" title="发表于 2025-04-30 11:25:33">2025-04-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/27/Windows%E6%A1%8C%E9%9D%A2%E7%89%88%E5%AE%89%E8%A3%85Docker/" title="Windows安装Docker"><img src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Windows安装Docker"/></a><div class="content"><a class="title" href="/2025/04/27/Windows%E6%A1%8C%E9%9D%A2%E7%89%88%E5%AE%89%E8%A3%85Docker/" title="Windows安装Docker">Windows安装Docker</a><time datetime="2025-04-27T11:39:48.000Z" title="发表于 2025-04-27 19:39:48">2025-04-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/26/git%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/" title="git命令使用"><img src="https://img.picui.cn/free/2025/05/05/68185fb4e05c6.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="git命令使用"/></a><div class="content"><a class="title" href="/2025/04/26/git%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/" title="git命令使用">git命令使用</a><time datetime="2025-04-26T06:44:26.000Z" title="发表于 2025-04-26 14:44:26">2025-04-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/25/Ngnix%E9%85%8D%E7%BD%AE%E6%B5%81%E5%AA%92%E4%BD%93/" title="Nginx流媒体配置"><img src="https://img.picui.cn/free/2025/05/05/681867cba8ef1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nginx流媒体配置"/></a><div class="content"><a class="title" href="/2025/04/25/Ngnix%E9%85%8D%E7%BD%AE%E6%B5%81%E5%AA%92%E4%BD%93/" title="Nginx流媒体配置">Nginx流媒体配置</a><time datetime="2025-04-25T13:44:00.000Z" title="发表于 2025-04-25 21:44:00">2025-04-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By ZuiLiu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
