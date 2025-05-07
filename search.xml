@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>redis基础知识</title>
+      <link href="/2025/05/07/redis%E5%9F%BA%E7%A1%80/"/>
+      <url>/2025/05/07/redis%E5%9F%BA%E7%A1%80/</url>
+      
+        <content type="html"><![CDATA[<h3 id="什么是redis？"><a href="#什么是redis？" class="headerlink" title="什么是redis？"></a>什么是redis？</h3><p>  Redis:REmote DIctionary Server(远程字典服务)。由意大利人Salvatore Sanfilippo开发。</p><h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul><li>内存高速缓存</li><li>key&#x2F;value分布式内存数据库</li><li>支持持久化</li><li>NoSQL</li><li>C语言编写</li><li>开源免费</li></ul><h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><p>缓存系统（“热点”数据：高频读、低频写）、计数器、消息队列系统、排行榜、社交网络和实时系统。</p><h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>分5个自有类型与一种自定义类型，自有类型包括</p><ul><li>String类</li><li>哈希类</li><li>列表类</li><li>集合类</li><li>顺序集合类</li></ul><h5 id="String类"><a href="#String类" class="headerlink" title="String类"></a>String类</h5><p>以二进制安全字符串组成，换句话说它理论可以存储一切二进制字符组成的文件，包括但不限于音视频、字符串、图片等，最高支持到512M。</p><p>可以使用这些操作指令进行：</p><ul><li>GET&#x2F;MGET</li><li>SET&#x2F;SETEX&#x2F;MSET&#x2F;MSETNX</li><li>INCR&#x2F;DECR</li><li>GETSET</li><li>DEL</li></ul><h5 id="哈希类"><a href="#哈希类" class="headerlink" title="哈希类"></a>哈希类</h5><p>由两个字符串类型的字段（field）与值（value）组成的键值对集合（map），其中字段是唯一的，一个哈希类的键包含一或多个字段，一个字段关联一个值。常常使用哈希来存储用户的信息，包含但不限于用户名、密码、电子邮件、手机号等。</p><p>可以使用这些操作指令进行：</p><ul><li>HGET&#x2F;HMGET&#x2F;HGETALL</li><li>HSET&#x2F;HMSET&#x2F;HSETNX</li><li>HEXISTS&#x2F;HLEN</li><li>HKEYS&#x2F;HDEL</li><li>HVALS</li></ul><h5 id="列表类-LIST"><a href="#列表类-LIST" class="headerlink" title="列表类 LIST"></a>列表类 LIST</h5><p>插入拍戏的字符串元素集合，多用双链表实现。</p><p>可以使用这些操作指令进行：</p><ul><li>LPUSH&#x2F;LPUSHX&#x2F;LPOP&#x2F;RPUSH&#x2F;RPUSHX&#x2F;RPOP&#x2F;LINSERT&#x2F;LSET</li><li>LINDEX&#x2F;LRANGE</li><li>LLEN&#x2F;LTRIM</li></ul><h5 id="集合类-SET"><a href="#集合类-SET" class="headerlink" title="集合类 SET"></a>集合类 SET</h5><p>无顺序集合，与列表类区别是：集合中元素无序且唯一，用哈希表实现。多用于交集、并集的计算，在找共同兴趣、好友、共同关注上引用。</p><p>可以使用这些操作指令进行：</p><ul><li>SADD&#x2F;SPOP&#x2F;SMOVE&#x2F;SCARD</li><li>SINTER&#x2F;SDIFF&#x2F;SDIFFSTORE&#x2F;SUNION</li></ul><h5 id="顺序集合类"><a href="#顺序集合类" class="headerlink" title="顺序集合类"></a>顺序集合类</h5><p>有序的集合类型，每个元素管理一个double类权值，从小到大排序，与set差不多。</p><h4 id="数据结构多样"><a href="#数据结构多样" class="headerlink" title="数据结构多样"></a>数据结构多样</h4><p><img src="https://s21.ax1x.com/2025/05/07/pELuIKJ.png"></p><p>其中压缩列表是列表键和哈希键的底层实现之一，整数集合是集合键的底层实现之一。</p><h4 id="内存存储持续化"><a href="#内存存储持续化" class="headerlink" title="内存存储持续化"></a>内存存储持续化</h4><p>所有数据默认保存在内存中，保证了极高的读写速度。有两个持久化选项</p><ul><li><strong>RDB（快照）</strong>：定期将内存中的数据集以二进制形式快照保存到磁盘上。</li><li><strong>AOF（追加文件）</strong>：记录服务器接收到的每一个写操作命令，在重启时重放这些命令恢复数据。</li></ul><h4 id="高可用性与扩展性"><a href="#高可用性与扩展性" class="headerlink" title="高可用性与扩展性"></a>高可用性与扩展性</h4><ul><li><strong>主从复制</strong>：实现数据冗余和读写分离，提高系统的可用性和读取性能。</li><li><strong>哨兵（Sentinel）机制</strong>：监控 Redis 实例的状态，自动故障转移。</li><li><strong>集群模式</strong>：支持分布式架构，允许水平扩展，通过分片管理大规模数据集。</li></ul><p>下篇将进行实践操作</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 基础知识 </category>
+          
+          <category> redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> redis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Docker常用指令</title>
       <link href="/2025/05/03/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
       <url>/2025/05/03/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</url>
