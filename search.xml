@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Nginx的tcp-udp代理</title>
+      <link href="/2025/05/09/Nginx%E7%9A%84tcp-udp%E4%BB%A3%E7%90%86/"/>
+      <url>/2025/05/09/Nginx%E7%9A%84tcp-udp%E4%BB%A3%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h3 id="Nginx的Tcp代理"><a href="#Nginx的Tcp代理" class="headerlink" title="Nginx的Tcp代理"></a>Nginx的Tcp代理</h3><h4 id="首先了解一下什么是Tcp与Udp"><a href="#首先了解一下什么是Tcp与Udp" class="headerlink" title="首先了解一下什么是Tcp与Udp"></a>首先了解一下什么是Tcp与Udp</h4><h5 id="Tcp"><a href="#Tcp" class="headerlink" title="Tcp"></a>Tcp</h5><ul><li><strong>连接导向</strong>：TCP是一种面向连接的协议，这意味着在数据传输之前，必须先建立连接。这个过程通常被称为“三次握手”。</li><li><strong>可靠性</strong>：TCP提供可靠的数据传输服务。它确保所有发送的数据包都能按序无误地到达接收方。如果数据包丢失或损坏，TCP会自动重传这些数据包。</li><li><strong>流量控制与拥塞控制</strong>：TCP具有内置的机制来控制数据流速，避免网络过载，并且能够动态调整发送速率以适应网络状况。</li><li><strong>应用场景</strong>：由于其高可靠性，TCP常用于需要保证数据完整性的应用，如文件传输（FTP）、电子邮件（SMTP、IMAP、POP3）、万维网浏览（HTTP、HTTPS）等。</li></ul><h5 id="Udp"><a href="#Udp" class="headerlink" title="Udp"></a>Udp</h5><ul><li><strong>无连接</strong>：UDP是一种无连接的协议，不需要提前建立连接就可以直接发送数据。这种方式使得UDP比TCP更加高效快捷。</li><li><strong>不可靠性</strong>：UDP不保证数据包能够成功到达目的地，也不保证数据包的顺序。因此，使用UDP的应用程序需要自己处理丢失或乱序的数据包。</li><li><strong>低开销</strong>：由于没有连接建立的过程以及简化的头部信息，UDP的额外开销比TCP小得多。</li><li><strong>应用场景</strong>：UDP适用于对实时性要求较高而对少量丢包容忍度较高的应用，如语音通话、视频会议、在线游戏等。</li></ul><p>在二者的应用场景中可以看出Tcp用的较多，而Ngnix在后期也开始支持Tcp与Udp代理了</p><h4 id="在Nginx中实现TCP代理功能"><a href="#在Nginx中实现TCP代理功能" class="headerlink" title="在Nginx中实现TCP代理功能"></a>在Nginx中实现TCP代理功能</h4><p>通常需要使用到Nginx Plus或者编译Nginx时包含<code>--with-stream</code>配置选项来启用stream模块（从Nginx 1.9.0版本开始引入）。这个模块允许Nginx作为TCP或UDP的代理服务器。</p><p>幸运的是现版本已经到1.26.x了，只需编辑编辑<code>nginx.conf</code>文件、在<code>http</code>块之外添加一个<code>stream</code>块来配置TCP代理服务就行了。</p><h5 id="简单的案例"><a href="#简单的案例" class="headerlink" title="简单的案例"></a>简单的案例</h5><p>现在你想要将流量从Nginx代理到后端的一个MySQL数据库服务器（默认端口3306），</p><p>在之前的文章《Nginx的初步了解》中就有了对其的简单介绍，简单修改下配置</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">stream &#123;</span><br><span class="line">    upstream backend_mysql &#123;</span><br><span class="line">        # 后端MySQL服务器地址，可以修改</span><br><span class="line">        server 192.168.1.100:3306;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 3306;  # 监听的端口</span><br><span class="line">        proxy_pass backend_mysql;  # 指定上游服务器组</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>完整配置文件，其中修改服务器地址就行了：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># Nginx进程数，建议设置为CPU核心数</span><br><span class="line">worker_processes  auto;</span><br><span class="line"></span><br><span class="line"># 错误日志路径以及日志级别</span><br><span class="line">error_log  C:/nginx/logs/error.log warn;</span><br><span class="line">pid        C:/nginx/logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"># events块，定义了Nginx如何处理连接</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  8192;  # 每个进程的最大连接数</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># TCP/UDP代理服务相关配置</span><br><span class="line">stream &#123;</span><br><span class="line">    upstream backend_mysql &#123;</span><br><span class="line">        # 后端MySQL服务器地址</span><br><span class="line">        server 你的服务器地址:3306;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 3306;  # 监听的端口</span><br><span class="line">        proxy_pass backend_mysql;  # 指定上游服务器组</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>如果出现权限不足无法创建日志文件的时候可以用管理员权限运行nginx就行了</p><p>现在在NaviCat来链接，操作如图：</p><p><img src="https://s21.ax1x.com/2025/05/09/pEOuXp8.png" alt="image-20250509193502152"></p><p><img src="https://s21.ax1x.com/2025/05/09/pEOuv6g.png"></p><p><img src="https://s21.ax1x.com/2025/05/09/pEOKVcF.png"></p><p>当然，偶尔会出现链接失败的场景，这时候根据服务器的内存、CPU核心数量来调整进程最大的连接数，如果出现了别的问题，可以查看C:&#x2F;nginx&#x2F;logs&#x2F;error.log的错误日志进行判断与修复。</p><p>还有注意不要轻易泄露服务器地址。。。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> nginx </category>
+          
+          <category> 实操手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> nginx </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>redis基础知识</title>
       <link href="/2025/05/07/redis%E5%9F%BA%E7%A1%80/"/>
       <url>/2025/05/07/redis%E5%9F%BA%E7%A1%80/</url>
