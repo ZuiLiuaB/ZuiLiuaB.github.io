@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>Docker常见报错-Windows</title>
+      <link href="/2025/05/13/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%20-%20%E5%89%AF%E6%9C%AC/"/>
+      <url>/2025/05/13/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%20-%20%E5%89%AF%E6%9C%AC/</url>
+      
+        <content type="html"><![CDATA[<h2 id="一-WSL-integration-with-distro-‘Ubuntu’-unexpectedly-stopped-DO-you-want-to-restart-it"><a href="#一-WSL-integration-with-distro-‘Ubuntu’-unexpectedly-stopped-DO-you-want-to-restart-it" class="headerlink" title="一   WSL integration with distro ‘Ubuntu’ unexpectedly stopped. DO you want to restart it?"></a>一   WSL integration with distro ‘Ubuntu’ unexpectedly stopped. DO you want to restart it?</h2><p><img src="https://broadscope-dialogue-new.oss-cn-beijing.aliyuncs.com/upload/20250511/1e39d592ec8c654ded4747df9dfa69f4/b9e1d6d44c9c41f2ba91066479d140dd/image.png?Expires=1810041596&OSSAccessKeyId=LTAI5tL97mBYzVcjkG1cUyin&Signature=u/9vI9StMtWbqOEUr1DvIX5KNlw=" alt="img"></p><p>此状况表明 Docker Desktop 与 Ubuntu WSL 发行版之间的集成出现了问题。</p><ul><li><p>点击弹窗中的 <strong>Restart the WSL integration</strong> 按钮，让 Docker Desktop 重新尝试与 WSL2 中的 Ubuntu 进行连接。</p></li><li><p>使用CMD或者Powershell运行此指令来重启WSL2，稍后重启docker</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure></li><li><p>还出现此状况，请更新WSL（1行）与Ubuntu（2行）</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --update</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update &amp;&amp; sudo apt upgrade</span><br></pre></td></tr></table></figure></li><li><p>仍然无法解决，请重装或重置docker</p><p>删除以下目录（备份重要数据）：<code>%USERPROFILE%\.docker\</code></p><h2 id="二-Docker-Desktop-encountered-an-unexpected-error-and-needs-to-close"><a href="#二-Docker-Desktop-encountered-an-unexpected-error-and-needs-to-close" class="headerlink" title="二  Docker Desktop encountered an unexpected error and needs to close."></a>二  Docker Desktop encountered an unexpected error and needs to close.</h2></li></ul><p><img src="https://broadscope-dialogue-new.oss-cn-beijing.aliyuncs.com/upload/20250511/1e39d592ec8c654ded4747df9dfa69f4/e0d138e5ffe946bdbd899f26ce177e5d/image.png?Expires=1810041873&OSSAccessKeyId=LTAI5tL97mBYzVcjkG1cUyin&Signature=kZzu3LpwaRZCzU8JUOPGuExadGM=" alt="img"></p><p>表明 Docker Desktop 在启动时无法及时与 Docker 引擎（Docker API）通信，导致超时并关闭.</p><ul><li><p>首先确认WSL正确启动</p></li><li><p>若可以则使用下方指令来停止wsl，之后重启Docker</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure></li><li><p>之后设置国内镜像源，先前文章有提及，可以在mirrors中括号内添加你想要的镜像源</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;builder&quot;: &#123;</span><br><span class="line">    &quot;gc&quot;: &#123;</span><br><span class="line">      &quot;defaultKeepStorage&quot;: &quot;20GB&quot;,</span><br><span class="line">      &quot;enabled&quot;: true</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;experimental&quot;: false,</span><br><span class="line">      &quot;registry-mirrors&quot;: [</span><br><span class="line">        &quot;https://docker.m.daocloud.io&quot;,</span><br><span class="line">        &quot;https://dockerproxy.com&quot;,</span><br><span class="line">        &quot;https://docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">        &quot;https://docker.nju.edu.cn&quot;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>关闭手动代理</p><p><img src="C:/Users/zuiliu/AppData/Roaming/Typora/typora-user-images/image-20250513204652631.png" alt="image-20250513204652631"></p></li><li><p>重新启动</p></li></ul><h2 id="三-An-unexpected-error-occurred-while-executing-a-WSL-command"><a href="#三-An-unexpected-error-occurred-while-executing-a-WSL-command" class="headerlink" title="三  An unexpected error occurred while executing a WSL command."></a>三  An unexpected error occurred while executing a WSL command.</h2><p><img src="https://broadscope-dialogue-new.oss-cn-beijing.aliyuncs.com/upload/20250513/1e39d592ec8c654ded4747df9dfa69f4/50960e63f8f24c00a6d025c34ded57a0/image.png?Expires=1810212671&OSSAccessKeyId=LTAI5tL97mBYzVcjkG1cUyin&Signature=5KRsRnz8FdP5rg0kDu5TFGa7LXI=" alt="img"></p><ul><li><p>使用CMD或者Powershell运行此指令来重启WSL2，稍后重启你的电脑</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure></li><li><p>或者在文件管理器搜索 docker_data.vhd 右键、属性、点击共享再分发给用户就行</p></li></ul><p>还有相关的问题网络上已有相似帖子，请按照报错查找。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Docker </category>
+          
+          <category> 常见问题 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Windows </tag>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Nginx的tcp-udp代理</title>
       <link href="/2025/05/09/Nginx%E7%9A%84tcp-udp%E4%BB%A3%E7%90%86/"/>
       <url>/2025/05/09/Nginx%E7%9A%84tcp-udp%E4%BB%A3%E7%90%86/</url>
