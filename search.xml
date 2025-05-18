@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>redis命令</title>
+      <link href="/2025/05/19/redis%E5%91%BD%E4%BB%A4/"/>
+      <url>/2025/05/19/redis%E5%91%BD%E4%BB%A4/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Redis的命令"><a href="#Redis的命令" class="headerlink" title="Redis的命令"></a>Redis的命令</h2><p>双击start.bat启动服务端，双击redis-cil.exe启动命令客户端，命令一般在在客户端进行。</p><p>使用ping指令查看服务是不是在线，出现PONG即为正常</p><p><img src="https://img.picui.cn/free/2025/05/18/6829a8d5002e8.png" alt="1747560664218.png"></p><h4 id="键（KEY）命令"><a href="#键（KEY）命令" class="headerlink" title="键（KEY）命令"></a>键（KEY）命令</h4><p>基本格式：指令 + 关键字</p><p>其中指令是不区分大小写的，而关键字需要区分大小写，在表格后会说明原因。</p><table><thead><tr><th align="left">序号</th><th align="left">命令及描述</th></tr></thead><tbody><tr><td align="left">1</td><td align="left">DEL key <br />该命令用于在 key 存在时删除 key。</td></tr><tr><td align="left">2</td><td align="left">DUMP key <br />序列化给定 key ，并返回被序列化的值。</td></tr><tr><td align="left">3</td><td align="left">EXISTS key <br />检查给定 key 是否存在。</td></tr><tr><td align="left">4</td><td align="left">EXPIRE key seconds <br />为给定 key 设置过期时间，以秒为单位计算。</td></tr><tr><td align="left">5</td><td align="left">EXPIREAT key timestamp  <br />EXPIREAT 的作用和 EXPIRE 类似，都用于为 key 设置过期时间。 不同在于 EXPIREAT 命令接受的时间参数是 UNIX 时间戳(unix timestamp)。</td></tr><tr><td align="left">6</td><td align="left">PEXPIRE key milliseconds<br />设置 key 的过期时间以毫秒计。</td></tr><tr><td align="left">7</td><td align="left">PEXPIREAT key milliseconds-timestamp <br />设置 key 过期时间的时间戳(unix timestamp) 以毫秒计</td></tr><tr><td align="left">8</td><td align="left">KEYS pattern <br />查找所有符合给定模式( pattern)的 key 。</td></tr><tr><td align="left">9</td><td align="left">MOVE key db <br />将当前数据库的 key 移动到给定的数据库 db 当中。</td></tr><tr><td align="left">10</td><td align="left">PERSIST key <br />移除 key 的过期时间，key 将持久保持。</td></tr><tr><td align="left">11</td><td align="left">PTTL key<br />以毫秒为单位返回 key 的剩余的过期时间。</td></tr><tr><td align="left">12</td><td align="left">TTL key <br />以秒为单位，返回给定 key 的剩余生存时间(TTL, time to live)。</td></tr><tr><td align="left">13</td><td align="left">RANDOMKEY<br />从当前数据库中随机返回一个 key 。</td></tr><tr><td align="left">14</td><td align="left">RENAME key newkey <br />修改 key 的名称</td></tr><tr><td align="left">15</td><td align="left">RENAMENX key newkey <br />仅当 newkey 不存在时，将 key 改名为 newkey 。</td></tr><tr><td align="left">16</td><td align="left">SCAN cursor [MATCH pattern] [COUNT count]<br />迭代数据库中的数据库键。</td></tr><tr><td align="left">17</td><td align="left">TYPE key <br />返回 key 所储存的值的类型。</td></tr><tr><td align="left">18</td><td align="left">SET key redis<br />创建一个key。</td></tr><tr><td align="left">19</td><td align="left">KEYS key<br />列出所有key开头的关键字，将key更换为*时列出所有关键字</td></tr></tbody></table><p>这里的key可以换成你想要的任何字符组合，但是这个和Java等基础变量命名规则一样严格大小写，比如KEY与key，ZuiLiu与zuiliu，都是两个不同的变量。</p><p>比如说新建这两个词的key</p><p><img src="https://img.picui.cn/free/2025/05/18/6829beaac8c81.png" alt="1747566255690.png"></p><p>严格按照大小写进行记录，删除时如果存在则返回1，不存在这个键时返回0</p><p><img src="C:/Users/zuiliu/AppData/Roaming/Typora/typora-user-images/image-20250518190828887.png" alt="image-20250518190828887"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 基础知识 </category>
+          
+          <category> redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> redis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>redis的配置文件</title>
       <link href="/2025/05/18/redis%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"/>
       <url>/2025/05/18/redis%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</url>
