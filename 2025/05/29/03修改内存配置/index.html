@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AgentSociety修改内存配置 | 醉流的神秘博客</title><meta name="author" content="ZuiLiu"><meta name="copyright" content="ZuiLiu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="AgentSociety修改内存配置适合不太满足实验要求条件的设备使用，测试后可以在16G环境中运行一个实验用例，不过我懒得给主设备配置环境了用的虚拟机，核心是改AgentSociety-main&#x2F;agentsociety&#x2F;configs&#x2F;_init_.py 的160行到163行并重新编译安装就行 1、启动环境虚拟机，使用shell链接或在虚拟机内打开下面的程序主函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AgentSociety修改内存配置">
+<meta property="og:url" content="https://zuiliuab.github.io/2025/05/29/03%E4%BF%AE%E6%94%B9%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="醉流的神秘博客">
+<meta property="og:description" content="AgentSociety修改内存配置适合不太满足实验要求条件的设备使用，测试后可以在16G环境中运行一个实验用例，不过我懒得给主设备配置环境了用的虚拟机，核心是改AgentSociety-main&#x2F;agentsociety&#x2F;configs&#x2F;_init_.py 的160行到163行并重新编译安装就行 1、启动环境虚拟机，使用shell链接或在虚拟机内打开下面的程序主函数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://agentsociety.readthedocs.io/en/latest/_static/framework-overview.jpg">
+<meta property="article:published_time" content="2025-05-29T11:11:22.000Z">
+<meta property="article:modified_time" content="2025-05-29T10:16:57.395Z">
+<meta property="article:author" content="ZuiLiu">
+<meta property="article:tag" content="AgentSociety">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://agentsociety.readthedocs.io/en/latest/_static/framework-overview.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AgentSociety修改内存配置",
+  "url": "https://zuiliuab.github.io/2025/05/29/03%E4%BF%AE%E6%94%B9%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE/",
+  "image": "https://agentsociety.readthedocs.io/en/latest/_static/framework-overview.jpg",
+  "datePublished": "2025-05-29T11:11:22.000Z",
+  "dateModified": "2025-05-29T10:16:57.395Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "ZuiLiu",
+      "url": "https://zuiliuab.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="https://img.picui.cn/free/2025/05/05/6818d9a8b7916.ico"><link rel="canonical" href="https://zuiliuab.github.io/2025/05/29/03%E4%BF%AE%E6%94%B9%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AgentSociety修改内存配置',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(url(https://file.51pptmoban.com/d/file/2022/09/22/a3169522af91c56dab1bb46900e26786.jpg));"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://bbs.mcrail.top/media/d5a8ebf1-1b7c-483e-84e2-8452b7cb786a/new.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://agentsociety.readthedocs.io/en/latest/_static/framework-overview.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">醉流的神秘博客</span></a><a class="nav-page-title" href="/"><span class="site-name">AgentSociety修改内存配置</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">AgentSociety修改内存配置<a class="post-edit-link" href="null_posts/03修改内存配置.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-05-29T11:11:22.000Z" title="发表于 2025-05-29 19:11:22">2025-05-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-29T10:16:57.395Z" title="更新于 2025-05-29 18:16:57">2025-05-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AgentSociety/">AgentSociety</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AgentSociety/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">常见问题</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;已經過了&quot;,&quot;messageNext&quot;:&quot;天自上次更新，文章內容可能已過時。&quot;,&quot;postUpdate&quot;:&quot;2025-05-29 18:16:57&quot;}" hidden></div><h1 id="AgentSociety修改内存配置"><a href="#AgentSociety修改内存配置" class="headerlink" title="AgentSociety修改内存配置"></a>AgentSociety修改内存配置</h1><p>适合不太满足实验要求条件的设备使用，测试后可以在16G环境中运行一个实验用例，不过我懒得给主设备配置环境了用的虚拟机，<strong>核心是改AgentSociety-main&#x2F;agentsociety&#x2F;configs&#x2F;_<em>init</em>_.py 的160行到163行并重新编译安装就行</strong></p>
+<h6 id="1、启动环境虚拟机，使用shell链接或在虚拟机内打开下面的程序主函数路径"><a href="#1、启动环境虚拟机，使用shell链接或在虚拟机内打开下面的程序主函数路径" class="headerlink" title="1、启动环境虚拟机，使用shell链接或在虚拟机内打开下面的程序主函数路径"></a>1、启动环境虚拟机，使用shell链接或在虚拟机内打开下面的程序主函数路径</h6><p>&#x2F;opt&#x2F;agentsociety&#x2F;AgentSociety-main&#x2F;agentsociety&#x2F;configs</p>
+<p>内存管理路径文件</p>
+<p>&#x2F;opt&#x2F;agentsociety&#x2F;AgentSociety-main&#x2F;agentsociety&#x2F;configs&#x2F;_<em>init</em>_.py</p>
+<h6 id="2、打开”-init-py”-或者使用vim编辑器"><a href="#2、打开”-init-py”-或者使用vim编辑器" class="headerlink" title="2、打开” _init_ .py” 或者使用vim编辑器"></a>2、打开” _<em>init</em>_ .py” 或者使用vim编辑器</h6><p>寻找该代码段，位置在160-163行</p>
+<p><img src="https://img.picui.cn/free/2025/05/29/683830856c882.png" alt="image-20250527150643089.png"></p>
+<p>修改成你需要的大小以及组合</p>
+<p>比如：</p>
+<p><img src="https://img.picui.cn/free/2025/05/29/68383085c9fe1.png" alt="image-20250527142652974.png"></p>
+<p>这种配置可以在物理内存为16G的条件下正常运行模拟，windows端docker同理。</p>
+<h6 id="3、重新编译与安装"><a href="#3、重新编译与安装" class="headerlink" title="3、重新编译与安装"></a>3、重新编译与安装</h6><p>unbuntu中找到项目主函数目录激活虚拟环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/agentsociety/AgentSociety-main</span><br><span class="line">conda activate agentsociety</span><br></pre></td></tr></table></figure>
+
+<p>当然，不论哪个平台，修改完成后回到环境内，激活虚拟环境后运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install .</span><br></pre></td></tr></table></figure>
+
+<p>即可，不论是否报错</p>
+<p>打开分享的网盘</p>
+<p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1aydSlBTzOh6MEALDV6aYKw?pwd=x2d8">https://pan.baidu.com/s/1aydSlBTzOh6MEALDV6aYKw?pwd=x2d8</a> 提取码: x2d8</p>
+<p>选择_dist.rar 进行下载，下载后解压成 <strong>_dist文件夹</strong></p>
+<p><img src="https://img.picui.cn/free/2025/05/29/68383085b0eab.png" alt="image-20250527152916194.png"></p>
+<p>使用final  shell或者别的shell工具进行上传、复制操作</p>
+<p>final shell 中只需在链接到的服务器吧_dist拖入 &#x2F;opt&#x2F;agentsociety 即可</p>
+<p>使用管理员权限复制该文件夹到 &#x2F;home&#x2F;user&#x2F;anaconda3&#x2F;envs&#x2F;agentsociety&#x2F;lib&#x2F;python3.12&#x2F;site-packages&#x2F;agentsociety&#x2F;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/agentsociety</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r dist/ /home/user/anaconda3/envs/agentsociety/lib/python3.12/site-packages/agentsociety/_dist</span><br></pre></td></tr></table></figure>
+
+<p>如果上面的cp指令无效，则使用下方指令使用管理员指令进行，记得输入密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudu cp -r /opt/agentsociety/_dist /home/user/anaconda3/envs/agentsociety/lib/python3.12/site-packages/agentsociety</span><br></pre></td></tr></table></figure>
+
+<h6 id="4、测试WebUI"><a href="#4、测试WebUI" class="headerlink" title="4、测试WebUI"></a>4、测试WebUI</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart agentui</span><br></pre></td></tr></table></figure>
+
+<p>此时可正常打开</p>
+<p>附录：官方英文文档地址</p>
+<p><a target="_blank" rel="noopener" href="https://agentsociety.readthedocs.io/en/latest/index.html">AgentSociety</a></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AgentSociety/">AgentSociety</a></div><div class="post-share"><div class="social-share" data-image="https://agentsociety.readthedocs.io/en/latest/_static/framework-overview.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://bbs.mcrail.top/media/1399b5f3-2a9b-4bd3-80d0-395306938838/mm_facetoface_collect_qrcode_1746424034929.png" target="_blank"><img class="post-qr-code-img" src="https://bbs.mcrail.top/media/1399b5f3-2a9b-4bd3-80d0-395306938838/mm_facetoface_collect_qrcode_1746424034929.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://bbs.mcrail.top/media/7b00d720-54ff-4511-82af-2b5e1da0a65f/1746424012275.jpg" target="_blank"><img class="post-qr-code-img" src="https://bbs.mcrail.top/media/7b00d720-54ff-4511-82af-2b5e1da0a65f/1746424012275.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/05/29/redis%E5%91%BD%E4%BB%A4/" title="redis命令"><img class="cover" src="https://pic.crazytaxii.com/Redis_Logo.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">redis命令</div></div><div class="info-2"><div class="info-item-1">Redis的命令双击start.bat启动服务端，双击redis-cil.exe启动命令客户端，命令一般在在客户端进行。 使用ping指令查看服务是不是在线，出现PONG即为正常  [TOC] 键（KEY）命令基本格式：指令 + 关键字 其中指令是不区分大小写的，而关键字需要区分大小写，在表格后会说明原因。    序号 命令及描述    1 DEL key 该命令用于在 key 存在时删除 key。   2 DUMP key 序列化给定 key ，并返回被序列化的值。   3 EXISTS key 检查给定 key 是否存在。   4 EXPIRE key seconds 为给定 key 设置过期时间，以秒为单位计算。   5 EXPIREAT key timestamp  EXPIREAT 的作用和 EXPIRE 类似，都用于为 key 设置过期时间。 不同在于 EXPIREAT 命令接受的时间参数是 UNIX 时间戳(unix timestamp)。   6 PEXPIRE key milliseconds设置 key 的过期时间以毫秒计。   7 PEXPIREAT...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://bbs.mcrail.top/media/d5a8ebf1-1b7c-483e-84e2-8452b7cb786a/new.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">ZuiLiu</div><div class="author-info-description">编程/自媒体/音乐/美术</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ZuiLiuaB"><i class="fab fa-github"></i><span>关注我的github</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/ZuiLiuaB" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://blog.csdn.net/weixin_73079022" target="_blank" title="CSDN"><i class="fa fa-book-open"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2706610584&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:2706610584@qq.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎！,背景：綿野レモンT,不定时更新！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AgentSociety%E4%BF%AE%E6%94%B9%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">AgentSociety修改内存配置</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1%E3%80%81%E5%90%AF%E5%8A%A8%E7%8E%AF%E5%A2%83%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8C%E4%BD%BF%E7%94%A8shell%E9%93%BE%E6%8E%A5%E6%88%96%E5%9C%A8%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E6%89%93%E5%BC%80%E4%B8%8B%E9%9D%A2%E7%9A%84%E7%A8%8B%E5%BA%8F%E4%B8%BB%E5%87%BD%E6%95%B0%E8%B7%AF%E5%BE%84"><span class="toc-number">1.0.0.0.0.1.</span> <span class="toc-text">1、启动环境虚拟机，使用shell链接或在虚拟机内打开下面的程序主函数路径</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2%E3%80%81%E6%89%93%E5%BC%80%E2%80%9D-init-py%E2%80%9D-%E6%88%96%E8%80%85%E4%BD%BF%E7%94%A8vim%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">1.0.0.0.0.2.</span> <span class="toc-text">2、打开” _init_ .py” 或者使用vim编辑器</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3%E3%80%81%E9%87%8D%E6%96%B0%E7%BC%96%E8%AF%91%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">1.0.0.0.0.3.</span> <span class="toc-text">3、重新编译与安装</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4%E3%80%81%E6%B5%8B%E8%AF%95WebUI"><span class="toc-number">1.0.0.0.0.4.</span> <span class="toc-text">4、测试WebUI</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/05/29/03%E4%BF%AE%E6%94%B9%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE/" title="AgentSociety修改内存配置"><img src="https://agentsociety.readthedocs.io/en/latest/_static/framework-overview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AgentSociety修改内存配置"/></a><div class="content"><a class="title" href="/2025/05/29/03%E4%BF%AE%E6%94%B9%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE/" title="AgentSociety修改内存配置">AgentSociety修改内存配置</a><time datetime="2025-05-29T11:11:22.000Z" title="发表于 2025-05-29 19:11:22">2025-05-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/29/redis%E5%91%BD%E4%BB%A4/" title="redis命令"><img src="https://pic.crazytaxii.com/Redis_Logo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis命令"/></a><div class="content"><a class="title" href="/2025/05/29/redis%E5%91%BD%E4%BB%A4/" title="redis命令">redis命令</a><time datetime="2025-05-29T10:00:00.000Z" title="发表于 2025-05-29 18:00:00">2025-05-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/18/redis%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" title="redis的配置文件"><img src="https://pic.crazytaxii.com/Redis_Logo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis的配置文件"/></a><div class="content"><a class="title" href="/2025/05/18/redis%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" title="redis的配置文件">redis的配置文件</a><time datetime="2025-05-17T16:00:00.000Z" title="发表于 2025-05-18 00:00:00">2025-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/15/redis%E7%9A%84%E5%AE%89%E8%A3%85/" title="redis的安装"><img src="https://pic.crazytaxii.com/Redis_Logo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis的安装"/></a><div class="content"><a class="title" href="/2025/05/15/redis%E7%9A%84%E5%AE%89%E8%A3%85/" title="redis的安装">redis的安装</a><time datetime="2025-05-15T12:00:00.000Z" title="发表于 2025-05-15 20:00:00">2025-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/13/Docker%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="Docker常见报错-Windows"><img src="https://bbs.mcrail.top/media/71bebcac-c81f-42b5-b8a9-1c2004947a48/image.png##" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker常见报错-Windows"/></a><div class="content"><a class="title" href="/2025/05/13/Docker%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="Docker常见报错-Windows">Docker常见报错-Windows</a><time datetime="2025-05-13T14:12:10.000Z" title="发表于 2025-05-13 22:12:10">2025-05-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By ZuiLiu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
